@@ -1,14 +1,12 @@
-# [Contact Form 7 - InfusionSoft Add-on](https://wordpress.org/plugins/contact-form-7-infusionsoft-add-on/)
+# [Contact Form 7 - Success Page Redirects](https://wordpress.org/plugins/contact-form-7-success-page-redirects/)
 
-Welcome to the Contact Form 7 - InfusionSoft Add-on repository on GitHub. Here you can browse the source, look at open issues, and even contribute to development.
+Welcome to the Contact Form 7 - Success Page Redirects repository on GitHub. Here you can browse the source, look at open issues, and even contribute to development.
 
-If you are not a developer, please install this plugin on the official [Contact Form 7 - InfusionSoft Add-on plugin page](https://wordpress.org/plugins/contact-form-7-infusionsoft-add-on/) on WordPress.org.
-
-*This plugin is not offered, sponsored, associated with or endorsed by Infusion Software, Inc.*
+If you are not a developer, please install this plugin on the official [Contact Form 7 - Success Page Redirects plugin page](https://wordpress.org/plugins/contact-form-7-success-page-redirects/) on WordPress.org.
 
 ## Support
 
-This repository is not suitable for support. Please don't use the issue tracker for support requests, but for core plugin development-related issues only. Support will take place in the [official plugin support forum](https://wordpress.org/support/plugin/contact-form-7-infusionsoft-add-on) on WordPress.org.
+This repository is not suitable for support. Please don't use the issue tracker for support requests, but for core plugin development-related issues only. Support will take place in the [official plugin support forum](https://wordpress.org/support/plugin/contact-form-7-success-page-redirects/) on WordPress.org.
 
 Support requests in issues on this repository will be closed immediately.
 
@@ -18,7 +16,7 @@ Community-made patches, localisations, bug reports and contributions are always 
 
 **Note:**
 
-GitHub is for *bug reports and contributions only* - if you have a support question or a request for a customization don't post here. Use the [official plugin support forum](https://wordpress.org/support/plugin/contact-form-7-infusionsoft-add-on) for customer and community support.
+GitHub is for *bug reports and contributions only* - if you have a support question or a request for a customization don't post here. Use the [official plugin support forum](https://wordpress.org/support/plugin/contact-form-7-success-page-redirects/) for customer and community support.
 
 ### Getting Started
 
@@ -42,14 +40,9 @@ At this point I'll review all pull requests, and make suggestions and changes if
 
 The following items are on the development to-do list. If you feel like trying to tackle one or more of them, feel free to submit a pull request.
 
-1. "Prettify" the contact tag input to use a similar style to the default WordPress Tags input meta box that appears on post edit screens. 
-2. Add support for all [InfusionSoft contact fields](https://developer.infusionsoft.com/docs/read/Table_Documentation#Contact). 
-3. Modify the JS tag generator so that input `type`s are modified, according to which contact field is selected. For example, an "infusionsoft-email" field should use `<input type="email">` rather than `<input type="text">`.
-4. Limit required fields to "infusionsoft-email" and the name fields. These fields are all that are required by the InfusionSoft API to validate a contact.
+1. Add the option to redirect to a page without disabling AJAX. Currently, this plugin disables the default Contact Form 7 JavaScript.
 
 ## Additional Resources
 
 * [General GitHub documentation](http://help.github.com/)
 * [GitHub pull request documentation](http://help.github.com/send-pull-requests/)
-
-*This plugin is not offered, sponsored, associated with or endorsed by Infusion Software, Inc.*
