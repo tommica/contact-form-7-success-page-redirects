@@ -84,6 +84,21 @@ function cf7_success_page_save_contact_form( $contact_form ) {
 }
 add_action( 'wpcf7_after_save', 'cf7_success_page_save_contact_form' );
 
+/*
+ *	Copy Redirect page key and assign it to duplicate form
+ */
+
+function cf7_after_form_create($my_form){
+
+	//Get old form ID
+	if(isset($_REQUEST['post']) || $_REQUEST['post'] != ''){
+		$old_id	=	get_post_meta($_REQUEST['post'], '_cf7_success_page_key', true);
+	}
+	//Update new duplicate form
+	update_post_meta( $my_form->id, '_cf7_success_page_key', $old_id );
+}
+
+add_action( 'wpcf7_after_create', cf7_after_form_create );
 
 /**
  * Redirect the user, after a successful email is sent
