@@ -98,7 +98,7 @@ function cf7_after_form_create($my_form){
 	update_post_meta( $my_form->id, '_cf7_success_page_key', $old_id );
 }
 
-add_action( 'wpcf7_after_create', cf7_after_form_create );
+add_action( 'wpcf7_after_create', 'cf7_after_form_create' );
 
 /**
  * Redirect the user, after a successful email is sent
