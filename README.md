@@ -36,6 +36,10 @@ GitHub is for *bug reports and contributions only* - if you have a support quest
 
 At this point I'll review all pull requests, and make suggestions and changes if necessary.
 
+### Thanks
+
+A **BIG** thank you to the following people for their contributions: [@rohilmistry](https://github.com/rohilmistry)
+
 ## To-Do
 
 The following items are on the development to-do list. If you feel like trying to tackle one or more of them, feel free to submit a pull request.
