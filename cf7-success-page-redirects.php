@@ -68,6 +68,7 @@ add_action( 'wpcf7_editor_panels', 'cf7_success_add_page_panels' );
 function cf7_success_page_metaboxes( $post ) {
     wp_nonce_field( 'cf7_success_page_metaboxes', 'cf7_success_page_metaboxes_nonce' );
     $cf7_success_page = get_post_meta( $post->id(), '_cf7_success_page_key', true );
+    $cf7_success_page_extra = get_post_meta( $post->id(), '_cf7_success_page_extra', true );
 
     // The meta box content
     $dropdown_options = array (
@@ -82,11 +83,17 @@ function cf7_success_page_metaboxes( $post ) {
             <legend>Select a page to redirect to on successful form submission.</legend>' .
             wp_dropdown_pages( $dropdown_options ) .
          '</fieldset>';
+
+    echo '<fieldset>
+            <legend>Add any extra data you would like to include in the url (you can use input values here if you want - i.e [your-name].</legend>' .
+            '<input type="text" class="large-text" name="cf7-redirect-page-extra" value="'.$cf7_success_page_extra.'" placeholder="?lorem=ipsum&dolor=[your-name]" />' .
+         '</fieldset>';
 }
 // Create the panel inputs (CF7 >= 4.2)
 function cf7_success_page_panel_meta( $post ) {
     wp_nonce_field( 'cf7_success_page_metaboxes', 'cf7_success_page_metaboxes_nonce' );
     $cf7_success_page = get_post_meta( $post->id(), '_cf7_success_page_key', true );
+    $cf7_success_page_extra = get_post_meta( $post->id(), '_cf7_success_page_extra', true );
 
     // The meta box content
     $dropdown_options = array (
@@ -101,6 +108,11 @@ function cf7_success_page_panel_meta( $post ) {
           <fieldset>
             <legend>Select a page to redirect to on successful form submission.</legend>' .
             wp_dropdown_pages( $dropdown_options ) .
+         '</fieldset>';
+
+    echo '<fieldset>
+            <legend>Add any extra data you would like to include in the url (you can use input values here if you want - i.e [your-name].</legend>' .
+            '<input type="text" class="large-text" name="cf7-redirect-page-extra" value="'.$cf7_success_page_extra.'" placeholder="?lorem=ipsum&dolor=[your-name]" />' .
          '</fieldset>';
 }
 
@@ -118,6 +130,7 @@ function cf7_success_page_save_contact_form( $contact_form ) {
         }
         // Update the stored value
         update_post_meta( $contact_form_id, '_cf7_success_page_key', $_POST['cf7-redirect-page-id'] );
+        update_post_meta( $contact_form_id, '_cf7_success_page_extra', $_POST['cf7-redirect-page-extra'] );
     }
 }
 add_action( 'wpcf7_after_save', 'cf7_success_page_save_contact_form' );
@@ -132,9 +145,11 @@ function cf7_success_page_after_form_create( $contact_form ){
     // Get the old form ID
     if ( !empty( $_REQUEST['post'] ) && !empty( $_REQUEST['_wpnonce'] ) ) {
         $old_form_id = get_post_meta( $_REQUEST['post'], '_cf7_success_page_key', true );
+        $old_form_extra = get_post_meta( $_REQUEST['post'], '_cf7_success_page_extra', true );
     }
     // Update the duplicated form
     update_post_meta( $contact_form_id, '_cf7_success_page_key', $old_form_id );
+    update_post_meta( $contact_form_id, '_cf7_success_page_extra', $old_form_extra );
 }
 add_action( 'wpcf7_after_create', 'cf7_success_page_after_form_create' );
 
@@ -147,8 +162,38 @@ function cf7_success_page_form_submitted( $contact_form ) {
 
     // Send us to a success page, if there is one
     $success_page = get_post_meta( $contact_form_id, '_cf7_success_page_key', true );
+    $success_page_extra = get_post_meta( $contact_form_id, '_cf7_success_page_extra', true );
     if ( !empty($success_page) ) {
-        wp_redirect( get_permalink( $success_page ) );
+        $url = get_permalink( $success_page );
+
+        // If anything else that needs to be appended to the url
+        if($success_page_extra) {
+            preg_match_all("/\[([^\]]*)\]/", $success_page_extra, $output_array);
+
+            // If any variables need to be replaced
+            if(isset($output_array[1]) && !empty($output_array[1])) {
+                foreach($output_array[1] as $key => $item) {
+                    // Check if there is any data that can be used
+                    if(isset($_POST[$item])) {
+                        // Just implode array to a simple comma-seperated list
+                        if(is_array($_POST[$item])) {
+                            $value = urlencode(implode(',', $_POST[$item]));
+                        } else {
+                            $value = urlencode($_POST[$item]);
+                        }
+                    } else {
+                        $value = '';
+                    }
+
+                    // If so, replace the original value
+                    $success_page_extra = str_replace($output_array[0][$key], $value, $success_page_extra);
+                }
+            }
+
+            $url .= $success_page_extra;
+        }
+
+        wp_redirect( $url );
         die();
     }
 }
